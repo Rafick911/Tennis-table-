@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TablePro | Pronostics Tennis de Table</title>
+    <meta
+      name="description"
+      content="Plateforme premium de pronostics de tennis de table : analyses, statistiques, VIP, codes d’accès et gestion manuelle de pronostics."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  </head>
+  <body>
+    <section id="entry-gate" class="entry-gate">
+      <div class="entry-card">
+        <div class="brand gate-brand">
+          <div class="brand-mark">T</div>
+          <div><span class="brand-name">TablePro</span><small>SPORT</small></div>
+        </div>
+        <span class="kicker">Votre espace tennis de table</span>
+        <h1>Analysez le jeu.<br />Jouez avec méthode.</h1>
+        <p>Connectez-vous ou créez un compte pour accéder aux matchs, aux pronostics VIP et à votre espace membre.</p>
+        <div class="auth-tabs">
+          <button class="tab active" data-entry-tab="signup">Créer un compte</button>
+          <button class="tab" data-entry-tab="login">Se connecter</button>
+        </div>
+        <form id="entry-signup-form" class="auth-form active">
+          <label><span>Nom ou pseudonyme</span><input type="text" name="name" required /></label>
+          <label><span>Email ou téléphone</span><input type="text" name="email" required /></label>
+          <label><span>Code promo / affiliation (facultatif)</span><input type="text" name="referralCode" maxlength="24" /></label>
+          <label><span>Mot de passe</span><input type="password" name="password" required /></label>
+          <label><span>Confirmer le mot de passe</span><input type="password" name="confirmPassword" required /></label>
+          <label class="checkbox-row"><input type="checkbox" name="acceptTerms" required /><span>J’accepte les conditions</span></label>
+          <button type="submit" class="btn btn-primary full">Créer mon compte</button>
+        </form>
+        <form id="entry-login-form" class="auth-form">
+          <label><span>Email / téléphone</span><input type="text" name="loginEmail" required /></label>
+          <label><span>Mot de passe</span><input type="password" name="loginPassword" required /></label>
+          <button type="submit" class="btn btn-primary full">Se connecter</button>
+        </form>
+        <p class="gate-notice">Un compte est nécessaire pour accéder à la plateforme.</p>
+      </div>
+      <div class="entry-art">
+        <div class="entry-art-glow"></div>
+        <span>TABLEPRO <b>SPORT</b></span>
+        <h2>Chaque point<br />compte.</h2>
+        <p>Pronostics tennis de table, analyses détaillées et espace VIP.</p>
+      </div>
+    </section>
+    <button id="menu-toggle" class="menu-toggle requires-auth" type="button" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
+    <div class="page-shell">
+      <header class="topbar requires-auth">
+        <div class="container nav-wrap">
+          <h1 id="current-page-title" class="current-page-title" aria-live="polite">Accueil</h1>
+          <div class="header-actions">
+            <a class="btn btn-primary" href="#recharge">Recharger</a>
+            <a class="btn btn-ghost" href="#account">Mon espace</a>
+          </div>
+        </div>
+      </header>
+      <div id="drawer-backdrop" class="drawer-backdrop requires-auth"></div>
+      <aside id="side-drawer" class="side-drawer requires-auth" aria-label="Menu principal" aria-hidden="true">
+        <div class="drawer-header">
+          <div class="brand">
+            <div class="brand-mark">T</div>
+            <div><span class="brand-name">TablePro</span><small>MENU</small></div>
+          </div>
+          <button id="menu-close" class="menu-close" type="button" aria-label="Fermer le menu">×</button>
+        </div>
+        <nav class="drawer-nav">
+          <a href="#home">🏠 <span>Accueil</span></a>
+          <a href="#simple">🏓 <span>Matchs</span></a>
+          <a href="#predictions">🏓 <span>Pronostics</span></a>
+          <a href="#analysis">📊 <span>Analyses</span></a>
+          <a href="#vip">⭐ <span>VIP</span></a>
+          <a href="#results">🏆 <span>Résultats</span></a>
+          <a href="#account">👤 <span>Mon compte</span></a>
+          <a href="#recharge">💰 <span>Solde</span></a>
+          <a href="#affiliate">👥 <span>Affiliation</span></a>
+          <a href="#allocations">📈 <span>Mes répartitions</span></a>
+          <a href="#settings">⚙️ <span>Paramètres</span></a>
+          <a href="#admin-panel" data-admin-only class="hidden">🛡️ <span>Administration</span></a>
+          <button id="drawer-logout" type="button">🚪 <span>Déconnexion</span></button>
+        </nav>
+      </aside>
+
+      <main class="requires-auth">
+        <section class="hero" id="home">
+          <div class="container hero-grid">
+            <div class="hero-copy">
+              <div class="eyebrow">TablePro • Analyse • Statistiques • Pronostics</div>
+              <h1>Pronostics Tennis de Table</h1>
+              <p class="hero-message">
+                Des prévisions premium et des analyses détaillées, publiées manuellement par notre équipe
+                administrateur.
+              </p>
+              <div class="hero-actions">
+                <a href="#predictions" class="btn btn-primary">Voir les pronostics</a>
+                <a href="#affiliate" class="btn btn-secondary">Inviter un ami</a>
+                <a href="#recharge" class="btn btn-ghost">Recharger mon solde</a>
+              </div>
+              <div class="trust-row">
+                <div>
+                  <strong>4.9/5</strong>
+                  <span>Confiance</span>
+                </div>
+                <div>
+                  <strong>1.2k+</strong>
+                  <span>Abonnés</span>
+                </div>
+                <div>
+                  <strong>Manual</strong>
+                  <span>Analyse Ciblée</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-visual" aria-label="Illustration premium d’un joueur de tennis de table">
+              <div class="glow glow-one"></div>
+              <div class="glow glow-two"></div>
+              <svg viewBox="0 0 640 620" class="player-illustration" role="img" aria-label="Joueur de tennis de table en action">
+                <defs>
+                  <linearGradient id="bgCard" x1="0%" x2="100%" y1="0%" y2="100%">
+                    <stop offset="0%" stop-color="#19271d" />
+                    <stop offset="100%" stop-color="#0d1710" />
+                  </linearGradient>
+                  <linearGradient id="shirt" x1="0%" x2="100%" y1="0%" y2="100%">
+                    <stop offset="0%" stop-color="#70e695" />
+                    <stop offset="100%" stop-color="#279b59" />
+                  </linearGradient>
+                  <linearGradient id="racket" x1="0%" x2="100%" y1="0%" y2="100%">
+                    <stop offset="0%" stop-color="#ffb064" />
+                    <stop offset="100%" stop-color="#f06b36" />
+                  </linearGradient>
+                </defs>
+                <rect x="48" y="52" width="540" height="500" rx="32" fill="url(#bgCard)" opacity="0.7"/>
+                <ellipse cx="330" cy="530" rx="150" ry="28" fill="#0d1220" opacity="0.8"/>
+                <path d="M180 290 L240 185 L360 210 L410 280 L385 440 L225 470 Z" fill="#14251a" opacity="0.8"/>
+                <path d="M240 160 C290 125, 390 135, 430 180 L470 260 C430 330, 350 350, 330 300 L300 184 Z" fill="#d8efff" opacity="0.18"/>
+                <path d="M200 280 Q300 180, 405 250" stroke="#72dc8d" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.5"/>
+                <g transform="translate(245 160)">
+                  <ellipse cx="110" cy="42" rx="64" ry="72" fill="#f5c9a7"/>
+                  <path d="M45 40 C60 -10, 160 -20, 185 45 L170 120 C156 150, 80 152, 60 122 Z" fill="#111b13"/>
+                  <path d="M59 48 Q110 20, 170 50 L160 120 Q110 150, 65 118 Z" fill="url(#shirt)"/>
+                  <path d="M45 92 L10 152 L88 140 L86 108 Z" fill="#111b13"/>
+                  <path d="M180 96 L275 140 L220 228 L172 146 Z" fill="#111b13"/>
+                  <path d="M60 123 L120 190 L148 154 L90 98 Z" fill="#f1f5ff" opacity="0.8"/>
+                  <path d="M90 122 L178 174 L144 226 L72 180 Z" fill="#54d17b" opacity="0.82"/>
+                  <path d="M190 145 L255 101 L295 136 L226 197 Z" fill="#dfe7ff" opacity="0.7"/>
+                  <path d="M180 100 L255 68 L290 95 L227 129 Z" fill="#111b13"/>
+                  <circle cx="40" cy="63" r="4" fill="#1c2433"/>
+                  <circle cx="170" cy="60" r="4" fill="#1c2433"/>
+                  <path d="M80 58 Q110 72 135 58" stroke="#2d3344" stroke-width="5" fill="none" stroke-linecap="round"/>
+                  <path d="M196 154 L285 190" stroke="#d0ebff" stroke-width="8" stroke-linecap="round"/>
+                  <path d="M188 162 L287 132" stroke="#7cffea" stroke-width="8" stroke-linecap="round"/>
+                  <path d="M284 130 L335 130" stroke="#dbe6ff" stroke-width="14" stroke-linecap="round"/>
+                  <path d="M298 124 L356 70 C368 68, 382 84, 374 100 L350 150 Z" fill="url(#racket)" opacity="0.92"/>
+                  <path d="M350 72 L395 38" stroke="#d7e8ff" stroke-width="5" stroke-linecap="round"/>
+                  <g transform="translate(310 135)">
+                    <rect x="-18" y="-14" width="92" height="24" rx="12" fill="#eef7ff" opacity="0.35"/>
+                    <rect x="-12" y="-8" width="64" height="16" rx="8" fill="#d9f3ff" opacity="0.9"/>
+                  </g>
+                </g>
+                <path d="M132 332 L86 420" stroke="#9be8ff" stroke-width="7" stroke-linecap="round"/>
+                <path d="M462 336 L512 430" stroke="#9be8ff" stroke-width="7" stroke-linecap="round"/>
+                <path d="M254 270 L144 431" stroke="#ff9a52" stroke-width="10" stroke-linecap="round" opacity="0.8"/>
+                <path d="M403 250 L503 420" stroke="#ff9a52" stroke-width="10" stroke-linecap="round" opacity="0.8"/>
+                <path d="M105 432 C175 446, 220 458, 296 468" stroke="#e6f9ff" stroke-width="9" stroke-linecap="round" opacity="0.75"/>
+              </svg>
+            </div>
+          </div>
+        </section>
+
+        <section class="announcement container" id="home-announcement">
+          <div class="announcement-card">
+            <span class="dot"></span>
+            <p>Les pronostics sont réalisés et publiés manuellement par l’équipe administrateur.</p>
+          </div>
+        </section>
+
+        <section class="section" id="simple">
+          <div class="container">
+            <div class="section-header">
+              <div><span class="kicker">Secteur simple</span><h2>Publications simples</h2></div>
+            </div>
+            <p class="helper-text">Chaque publication simple est préparée et publiée manuellement par l’administrateur avec exactement deux matchs.</p>
+            <div id="simple-publications" class="publication-list"></div>
+          </div>
+        </section>
+
+        <section class="section" id="predictions">
+          <div class="container">
+            <div class="section-header">
+              <div>
+                <span class="kicker">Pronostics</span>
+                <h2>Matchs du jour</h2>
+              </div>
+              <a class="btn btn-primary small" href="#recharge">Recharger mon solde</a>
+            </div>
+            <div id="prediction-list" class="prediction-grid"></div>
+          </div>
+        </section>
+
+        <section class="section muted" id="analysis">
+          <div class="container">
+            <div class="section-header center">
+              <div>
+                <span class="kicker">Analyses tennis de table</span>
+                <h2>Statistiques et tendances de match</h2>
+              </div>
+            </div>
+            <div class="analysis-grid">
+              <article class="info-card">
+                <h3>Face-à-face</h3>
+                <ul>
+                  <li>H2H : 7-5</li>
+                  <li>Confrontations : 12</li>
+                  <li>Victoires J1 : 7</li>
+                  <li>Victoires J2 : 5</li>
+                </ul>
+              </article>
+              <article class="info-card">
+                <h3>Forme récente</h3>
+                <ul>
+                  <li>L5 : 4V / 1D</li>
+                  <li>L10 : 7V / 3D</li>
+                  <li>L15 : 10V / 5D</li>
+                  <li>L20 : 13V / 7D</li>
+                </ul>
+              </article>
+              <article class="info-card">
+                <h3>Statistiques</h3>
+                <ul>
+                  <li>3-0 : 4</li>
+                  <li>3-1 : 6</li>
+                  <li>4 sets ou + : 3</li>
+                  <li>Moyenne points : 11.8</li>
+                </ul>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="vip">
+          <div class="container">
+            <div class="section-header center">
+              <div>
+                <span class="kicker">Espace VIP</span>
+                <h2>Accès premium</h2>
+              </div>
+            </div>
+            <p class="helper-text">Les publications VIP sont déverrouillées en une seule fois au tarif indiqué. L’accès couvre tous les matchs de la publication.</p>
+            <div id="vip-publications" class="publication-list"></div>
+          </div>
+        </section>
+
+        <section class="section muted" id="results">
+          <div class="container results-shell">
+            <div class="section-header center">
+              <div>
+                <span class="kicker">Résultats</span>
+                <h2>Historique des pronostics</h2>
+              </div>
+            </div>
+            <div class="stats-grid" id="results-summary"></div>
+            <div id="results-list" class="result-list"></div>
+          </div>
+        </section>
+
+        <section class="section account-panel" id="account">
+          <div class="container account-grid">
+            <div class="auth-card account-balance-card">
+            <span class="kicker">Votre portefeuille</span>
+            <h3>Solde disponible</h3>
+            <strong id="account-balance" class="balance-amount">0 FCFA</strong>
+            <p>Rechargez votre compte ou utilisez vos récompenses d’affiliation pour débloquer les pronostics VIP.</p>
+            <a class="btn btn-primary full" href="#recharge">Recharger mon solde</a>
+            <h4>Dernières opérations</h4>
+            <div id="transaction-history" class="transaction-history"></div>
+            </div>
+
+            <div class="member-card" id="member-card">
+              <div class="member-header">
+                <div>
+                  <span class="kicker">Espace membre</span>
+                  <h3 id="member-name">Mon compte</h3>
+                </div>
+                <span id="vip-badge" class="status-badge neutral">Compte standard</span>
+              </div>
+
+              <div class="member-grid">
+                <div class="mini-stat">
+                  <span>Statut du compte</span>
+                  <strong id="account-status">Non connecté</strong>
+                </div>
+                <div class="mini-stat">
+                  <span>Statut VIP</span>
+                  <strong id="vip-status">Inactif</strong>
+                </div>
+                <div class="mini-stat">
+                  <span>Date d’expiration VIP</span>
+                  <strong id="vip-expiration">—</strong>
+                </div>
+                <div class="mini-stat">
+                  <span>Historique des activations</span>
+                  <strong id="vip-history">0</strong>
+                </div>
+                <div class="mini-stat">
+                  <span>Code d’affiliation</span>
+                  <strong id="member-referral-code">—</strong>
+                </div>
+              </div>
+
+              <div class="member-actions">
+                <button class="btn btn-secondary" id="view-predictions-btn">Voir les pronostics</button>
+                <button class="btn btn-ghost" id="logout-btn">Déconnexion</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="affiliate">
+          <div class="container account-grid">
+            <div class="member-card">
+              <span class="kicker">Programme affiliation</span>
+              <h2>Invitez vos amis</h2>
+              <p>Partagez votre code permanent. Chaque nouveau membre inscrit et validé avec votre code vous rapporte 50 FCFA, une seule fois.</p>
+              <div class="activation-input-row">
+                <input id="referral-share-code" type="text" readonly value="Connectez-vous pour voir votre code" />
+                <button id="copy-referral-btn" class="btn btn-primary small" type="button">Copier</button>
+              </div>
+              <p id="referral-summary" class="helper-text">Récompenses validées : 0</p>
+            </div>
+            <div class="member-card">
+              <span class="kicker">Historique affiliation</span>
+              <h3>Mes invitations récompensées</h3>
+              <div id="referral-history" class="transaction-history"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section muted" id="recharge">
+          <div class="container account-grid">
+            <div class="member-card">
+              <span class="kicker">Recharger le solde</span>
+              <h2>Choisissez un pack</h2>
+              <p>Après votre paiement, saisissez le code de recharge à 12 chiffres reçu pour créditer votre solde.</p>
+              <div id="recharge-packs" class="recharge-packs"></div>
+              <p id="selected-pack-message" class="helper-text">Sélectionnez un pack pour afficher le montant choisi.</p>
+            </div>
+            <div class="member-card">
+              <span class="kicker">Code de recharge</span>
+              <h3>Créditer mon compte</h3>
+              <label><span>Code à 12 chiffres</span><input id="recharge-code-input" type="text" inputmode="numeric" maxlength="12" placeholder="000000000000" /></label>
+              <button id="redeem-recharge-code" class="btn btn-primary full">Utiliser mon code</button>
+              <p id="recharge-message" class="helper-text"></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="allocations">
+          <div class="container">
+            <div class="section-header">
+              <div><span class="kicker">Gestion responsable du capital</span><h2>Mes répartitions</h2></div>
+              <span id="capital-trend" class="trend-badge stable">🟠 Stable</span>
+            </div>
+            <p class="responsible-note">La gestion de mise ne garantit aucun gain. Ne misez jamais une somme que vous ne pouvez pas vous permettre de perdre.</p>
+            <div class="allocation-stats" id="allocation-stats"></div>
+            <div class="allocation-grid">
+              <form id="capital-settings-form" class="member-card allocation-form">
+                <h3>Capital et limites</h3>
+                <label><span>Capital de départ (FCFA)</span><input id="starting-capital" type="number" min="0" step="50" required /></label>
+                <div class="two-col">
+                  <label><span>Risque maximum par pari (FCFA)</span><input id="max-risk" type="number" min="0" step="50" placeholder="Sans limite définie" /></label>
+                  <label><span>Limite de risque par pari (%)</span><input id="risk-percent" type="number" min="0" max="10" step="0.5" value="2" /></label>
+                </div>
+                <button class="btn btn-primary" type="submit">Enregistrer le capital</button>
+              </form>
+              <form id="stake-calculator-form" class="member-card allocation-form">
+                <h3>Calculateur de mise</h3>
+                <label><span>Cote décimale</span><input id="calculator-odds" type="number" min="1.01" step="0.01" value="1.50" required /></label>
+                <div class="calculator-results" id="calculator-results"></div>
+                <p class="helper-text">Estimations de mise uniquement — aucun niveau ne rend un pari sûr.</p>
+              </form>
+            </div>
+            <div class="member-card coupon-panel">
+              <div class="member-header">
+                <div><span class="kicker">Suivi réel</span><h3>Coupons enregistrés</h3></div>
+                <button class="btn btn-primary" id="show-coupon-form" type="button">+ Ajouter un coupon</button>
+              </div>
+              <form id="coupon-form" class="coupon-form hidden">
+                <div class="two-col">
+                  <label><span>Date</span><input id="coupon-date" type="date" required /></label>
+                  <label><span>Nom du coupon / événement</span><input id="coupon-name" type="text" required /></label>
+                </div>
+                <div class="two-col">
+                  <label><span>Cote</span><input id="coupon-odds" type="number" min="1.01" step="0.01" required /></label>
+                  <label><span>Montant misé (FCFA)</span><input id="coupon-stake" type="number" min="50" step="50" required /></label>
+                </div>
+                <div class="two-col">
+                  <label><span>Résultat</span><select id="coupon-result"><option value="won">Gagné</option><option value="lost">Perdu</option></select></label>
+                  <label><span>Bénéfice net obtenu (FCFA, facultatif)</span><input id="coupon-gain" type="number" min="0" step="50" placeholder="Calcul automatique depuis la cote" /></label>
+                </div>
+                <label><span>Commentaire (facultatif)</span><textarea id="coupon-comment" rows="2"></textarea></label>
+                <div class="coupon-form-actions"><button class="btn btn-primary" type="submit">Enregistrer le résultat</button><button class="btn btn-ghost" id="cancel-coupon-form" type="button">Annuler</button></div>
+              </form>
+              <div class="chart-card">
+                <h4>Évolution du capital</h4>
+                <svg id="capital-chart" viewBox="0 0 800 230" role="img" aria-label="Graphique de l’évolution de votre capital"></svg>
+              </div>
+              <div class="table-wrap allocation-history-wrap">
+                <table>
+                  <thead><tr><th>Date</th><th>Coupon</th><th>Cote</th><th>Mise</th><th>Résultat</th><th>Gain / Perte</th><th>Capital</th><th>Commentaire</th></tr></thead>
+                  <tbody id="coupon-history"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section muted" id="settings">
+          <div class="container settings-grid">
+            <div class="member-card">
+              <span class="kicker">Préférences</span>
+              <h2>Paramètres</h2>
+              <form id="appearance-form">
+                <label><span>Apparence</span><select id="appearance-choice"><option value="dark">🌙 Mode sombre</option><option value="light">☀️ Mode clair</option></select></label>
+                <button class="btn btn-primary" type="submit">Enregistrer l’apparence</button>
+              </form>
+            </div>
+            <form id="password-change-form" class="member-card settings-password-form">
+              <span class="kicker">Sécurité du compte</span>
+              <h3>Modifier mon mot de passe</h3>
+              <label><span>Ancien mot de passe</span><input id="old-password" type="password" autocomplete="current-password" required /></label>
+              <label><span>Nouveau mot de passe</span><input id="new-password" type="password" autocomplete="new-password" minlength="8" required /></label>
+              <label><span>Confirmer le nouveau mot de passe</span><input id="confirm-new-password" type="password" autocomplete="new-password" minlength="8" required /></label>
+              <button class="btn btn-primary" type="submit">Mettre à jour le mot de passe</button>
+              <p class="helper-text">Sur cette version de démonstration, les comptes et mots de passe restent stockés localement dans ce navigateur. Connectez un serveur d’authentification avant un déploiement réel.</p>
+            </form>
+          </div>
+        </section>
+
+        <section class="section admin-section" id="admin-panel">
+          <div class="container">
+            <div class="section-header">
+              <div>
+                <span class="kicker">Administrateur</span>
+                <h2>Espace Admin</h2>
+              </div>
+            </div>
+
+            <div class="admin-dashboard" id="admin-dashboard">
+              <div class="metric-card">
+                <span>Membres</span>
+                <strong id="total-members">0</strong>
+              </div>
+              <div class="metric-card"><span>Membres actifs</span><strong id="active-members-count">0</strong></div>
+              <div class="metric-card">
+                <span>VIP actifs</span>
+                <strong id="active-vip">0</strong>
+              </div>
+              <div class="metric-card">
+                <span>VIP expirés</span>
+                <strong id="expired-vip">0</strong>
+              </div>
+              <div class="metric-card">
+                <span>Codes générés</span>
+                <strong id="generated-codes">0</strong>
+              </div>
+              <div class="metric-card">
+                <span>Codes utilisés</span>
+                <strong id="used-codes">0</strong>
+              </div>
+              <div class="metric-card">
+                <span>Codes disponibles</span>
+                <strong id="available-codes">0</strong>
+              </div>
+              <div class="metric-card">
+                <span>Pronostics publiés</span>
+                <strong id="published-predictions">0</strong>
+              </div>
+              <div class="metric-card">
+                <span>Gagnés / Perdus</span>
+                <strong id="wins-losses">0 / 0</strong>
+              </div>
+              <div class="metric-card"><span>Nouveaux membres (30 jours)</span><strong id="new-members-count">0</strong></div>
+              <div class="metric-card"><span>Visites (appareil / sessions)</span><strong id="visit-count">0</strong></div>
+              <div class="metric-card"><span>Recharges créditées</span><strong id="payment-count">0</strong></div>
+              <div class="metric-card"><span>Montant crédité</span><strong id="payment-total">0 FCFA</strong></div>
+              <div class="metric-card"><span>Déblocages VIP / revenus</span><strong id="vip-revenue">0 / 0 FCFA</strong></div>
+            </div>
+            <div class="admin-analytics">
+              <article class="chart-card"><h4>Activité récente</h4><svg id="admin-activity-chart" viewBox="0 0 800 220" role="img" aria-label="Graphique des visites, recharges et déblocages VIP"></svg></article>
+            </div>
+
+            <div class="admin-users-panel">
+              <h3>Gestion des membres et soldes</h3>
+              <form id="balance-adjustment-form" class="balance-adjustment">
+                <label><span>Membre</span><select id="balance-user-select" required></select></label>
+                <label><span>Opération</span><select id="balance-direction"><option value="credit">Créditer</option><option value="debit">Débiter</option></select></label>
+                <label><span>Montant FCFA</span><input id="balance-adjustment" type="number" min="1" step="50" required /></label>
+                <label><span>Motif</span><input id="balance-reason" type="text" placeholder="Ajustement administrateur" /></label>
+                <button class="btn btn-primary small" type="submit">Mettre à jour</button>
+              </form>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Membre</th><th>Identifiant</th><th>Code affiliation</th><th>Parrainages</th><th>Solde</th><th>Compte</th><th>Action</th></tr></thead>
+                  <tbody id="admin-users-table-body"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="admin-grid">
+              <form id="admin-prediction-form" class="admin-form">
+                <h3>Créer une publication</h3>
+                <label><span>Secteur</span><select id="publication-type" name="publicationType"><option value="simple">Simple — 2 matchs</option><option value="vip">VIP — 5 matchs minimum</option></select></label>
+                <label id="publication-price-field" class="hidden"><span>Prix de déblocage de la publication VIP (FCFA)</span><input id="publication-price" type="number" min="1" step="1" value="500" /></label>
+                <div id="publication-match-forms" class="publication-match-forms"></div>
+                <div class="publication-builder-actions">
+                  <button id="add-publication-match" class="btn btn-secondary" type="button">＋ Ajouter un autre match</button>
+                  <span id="publication-match-count" class="helper-text"></span>
+                </div>
+                <div id="publication-preview" class="publication-preview"></div>
+                <button class="btn btn-primary full" type="submit">PUBLIER</button>
+              </form>
+
+              <div class="admin-tools" id="admin-tools-root">
+                <div class="vip-generator-box">
+                  <h3>Codes de recharge</h3>
+                  <div class="two-col">
+                    <label><span>Montant (FCFA)</span><input id="recharge-amount" type="number" min="1" step="50" value="2000" /></label>
+                    <label><span>Pack disponible</span><select id="recharge-pack-select"></select></label>
+                  </div>
+                  <label><span>Nombre de codes</span><input id="recharge-code-count" type="number" min="1" max="100" value="1" /></label>
+                  <button id="generate-recharge-code" class="btn btn-primary small" type="button">Générer les codes</button>
+                  <div id="generated-recharge-output" class="generated-code-output">Aucun code généré</div>
+                  <form id="recharge-pack-form" class="pack-form">
+                    <h4>Ajouter un montant de pack</h4>
+                    <div class="activation-input-row">
+                      <input id="new-pack-amount" type="number" min="1" step="50" placeholder="Nouveau montant FCFA" />
+                      <button class="btn btn-secondary small" type="submit">Ajouter / mettre à jour</button>
+                    </div>
+                  </form>
+                </div>
+                <div class="vip-codes-table">
+                  <h3>Codes de recharge générés</h3>
+                  <div class="table-wrap">
+                    <table>
+                      <thead><tr><th>Code</th><th>Montant</th><th>Statut</th><th>Création</th><th>Utilisateur</th><th>Action</th></tr></thead>
+                      <tbody id="recharge-codes-table-body"></tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="vip-codes-table">
+                  <h3>Packs disponibles</h3>
+                  <div id="admin-packs-list" class="admin-packs-list"></div>
+                </div>
+                <div class="vip-codes-table">
+                  <h3>Gestion des pronostics</h3>
+                  <div class="table-wrap">
+                    <table>
+                      <thead><tr><th>Publication / match</th><th>Prix VIP</th><th>Résultat</th><th>Publication</th><th>Actions</th></tr></thead>
+                      <tbody id="admin-predictions-table-body"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer requires-auth">
+        <div class="container footer-wrap">
+          <div>
+            <div class="brand footer-brand">
+              <div class="brand-mark">T</div>
+              <div>
+                <span class="brand-name">TablePro</span>
+                <small>SPORT</small>
+              </div>
+            </div>
+          </div>
+          <p>© 2026 TablePro - Pronostics Tennis de Table</p>
+        </div>
+      </footer>
+    </div>
+
+    <template id="publication-match-template">
+      <fieldset class="builder-match">
+        <legend class="builder-match-title">Match 1</legend>
+        <div class="two-col">
+          <label><span>Championnat</span><input name="competition" required /></label>
+          <label><span>Date</span><input name="date" type="date" required /></label>
+        </div>
+        <div class="two-col">
+          <label><span>Heure</span><input name="time" type="time" required /></label>
+          <label><span>Marché (facultatif)</span><input name="market" /></label>
+        </div>
+        <div class="two-col">
+          <label><span>Joueur / Équipe 1</span><input name="player1" required /></label>
+          <label><span>Joueur / Équipe 2</span><input name="player2" required /></label>
+        </div>
+        <div class="two-col">
+          <label><span>Prédiction (saisie admin)</span><input name="prediction" required /></label>
+          <label><span>Odds</span><input name="odds" type="number" min="1.01" step="0.01" required /></label>
+        </div>
+        <label><span>Confiance (%)</span><input name="confidence" type="number" min="1" max="100" required /></label>
+        <button class="table-action remove-builder-match" type="button">Retirer ce match</button>
+      </fieldset>
+    </template>
+
+    <div id="toast" class="toast"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
